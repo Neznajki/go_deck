@@ -6,36 +6,36 @@ import (
 
 type Hand Deck
 
-func (h Hand) Init() {
+func (Hand) Init() {
 	panic("implement me")
 }
 
-func (h Hand) Reset() {
+func (Hand) Reset() {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (h Hand) Shuffle() {
+func (Hand) Shuffle() {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (h Hand) Pull(size int) DeckInterface {
+func (Hand) Pull(int) DeckInterface {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (h Hand) Pick(cardType contract.CTT, cardValue contract.CVT) CardInterface {
+func (Hand) Pick(contract.CTT, contract.CVT) CardInterface {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (h Hand) Search(cardType contract.CTT, cardValue contract.CVT) CardInterface {
+func (Hand) Search(contract.CTT, contract.CVT) CardInterface {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (h Hand) Put(cardType contract.CTT, cardValue contract.CVT) {
+func (Hand) Put(contract.CTT, contract.CVT) {
 	//TODO implement me
 	panic("implement me")
 }
