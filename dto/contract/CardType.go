@@ -31,5 +31,5 @@ func (ct CardType) CardType() string {
 }
 
 func NewCardType(cTT CTT) CardTypeInterface {
-	return &CardType{cTT}
+	return &CardType{cT: cTT}
 }

@@ -49,5 +49,5 @@ func (cv CardValue) CardValue() string {
 }
 
 func NewCardValue(cVT CVT) CardValueInterface {
-	return &CardValue{cVT}
+	return &CardValue{cV: cVT}
 }

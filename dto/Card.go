@@ -20,7 +20,7 @@ func (c Card) CardPrintValue() string {
 }
 
 func NewCard(cardType contract.CTT, cardValue contract.CVT) CardInterface {
-	return &Card{contract.NewCardType(cardType), contract.NewCardValue(cardValue)}
+	return &Card{cT: contract.NewCardType(cardType), cV: contract.NewCardValue(cardValue)}
 }
 
 func (c Card) Equals(nci CardInterface) bool {
