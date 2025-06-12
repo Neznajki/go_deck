@@ -7,7 +7,7 @@ type CardTypeInterface interface {
 }
 
 type CardType struct {
-	cT CTT
+	CTT
 }
 
 const (
@@ -27,9 +27,9 @@ var existingTypes = map[CTT]string{
 }
 
 func (ct CardType) CardType() string {
-	return existingTypes[ct.cT]
+	return existingTypes[ct.CTT]
 }
 
 func NewCardType(cTT CTT) CardTypeInterface {
-	return &CardType{cT: cTT}
+	return &CardType{CTT: cTT}
 }

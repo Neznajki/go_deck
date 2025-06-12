@@ -12,7 +12,7 @@ func TestNewCardType(t *testing.T) {
 		t.Error("NewCardType(Clubs) returned nil")
 	}
 
-	assert.Equal(t, fmt.Sprintf("%+v", cardType), "&{cT:0}")
+	assert.Equal(t, fmt.Sprintf("%+v", cardType), "&{CTT:0}")
 }
 
 func TestCardType_CardType(t *testing.T) {
