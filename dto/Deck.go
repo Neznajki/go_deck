@@ -101,7 +101,7 @@ func (d *Deck) Search(cardType contract.CTT, cardValue contract.CVT) CardInterfa
 	return nil
 }
 
-func (d *Deck) Put(cardType contract.CTT, cardValue contract.CVT) error {
+func (d *Deck) Put(cardType contract.CTT, cardValue contract.CVT) {
 	var existingCard = d.Search(cardType, cardValue)
 	if existingCard != nil {
 		fmt.Println(errors.New(fmt.Sprintf("Deck already have %s card", existingCard.CardPrintValue())))
@@ -110,8 +110,6 @@ func (d *Deck) Put(cardType contract.CTT, cardValue contract.CVT) error {
 
 	var card = NewCard(cardType, cardValue)
 	d.cards = append(d.cards, card)
-
-	return nil
 }
 
 func recreateDeck(d *Deck) {

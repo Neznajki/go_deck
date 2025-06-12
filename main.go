@@ -17,5 +17,4 @@ func main() {
 	fmt.Println(fmt.Sprintf("left in old deck: %s", deck.GetAllCards()))
 
 	fmt.Println(fmt.Sprintf("pulled to hand: %s", handCards.GetAllCards()))
-
 }

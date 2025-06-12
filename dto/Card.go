@@ -24,8 +24,6 @@ func NewCard(cardType contract.CTT, cardValue contract.CVT) CardInterface {
 }
 
 func (c Card) Equals(nci CardInterface) bool {
-	var nc = nci.(Card)
-
-	return c.cV == nc.cV && c.cT == nc.cT
-
+	var nc = nci.(*Card)
+	return c.cV.CardValue() == nc.cV.CardValue() && c.cT.CardType() == nc.cT.CardType()
 }
