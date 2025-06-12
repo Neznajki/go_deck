@@ -36,7 +36,7 @@ func (d *Deck) Init() {
 
 func (d *Deck) Reset() {
 	if !d.initiated {
-		fmt.Println(errors.New("already initiated"))
+		fmt.Println(errors.New("deck not initiated"))
 		os.Exit(1)
 	}
 	d.initiated = true
@@ -46,7 +46,7 @@ func (d *Deck) Reset() {
 
 func (d *Deck) Shuffle() {
 	if !d.initiated {
-		fmt.Println(errors.New("already initiated"))
+		fmt.Println(errors.New("deck not initiated"))
 		os.Exit(1)
 	}
 
@@ -57,7 +57,7 @@ func (d *Deck) Shuffle() {
 
 func (d *Deck) Pull(size int) []CardInterface {
 	if len(d.cards) < size {
-		fmt.Println(errors.New("already initiated"))
+		fmt.Println(errors.New("not enough cards"))
 		os.Exit(1)
 	}
 	result := d.cards[:size]
@@ -80,30 +80,35 @@ func remove(d *Deck, card CardInterface) {
 func (d *Deck) Pick(cardType contract.CTT, cardValue contract.CVT) CardInterface {
 	var result = d.Search(cardType, cardValue)
 
+	if result == nil {
+		fmt.Println(errors.New("card already withdrawn"))
+		os.Exit(1)
+	}
+
 	remove(d, result)
 
 	return result
 }
 
-func (d *Deck) Search(cardType contract.CTT, cardValue contract.CVT) (CardInterface, error) {
+func (d *Deck) Search(cardType contract.CTT, cardValue contract.CVT) CardInterface {
 	newCard := NewCard(cardType, cardValue)
 	for _, card := range d.cards {
 		if card.Equals(newCard) {
-			return card, nil
+			return card
 		}
 	}
 
-	fmt.Println(errors.New("card already withdrawn"))
-	os.Exit(1)
+	return nil
 }
 
 func (d *Deck) Put(cardType contract.CTT, cardValue contract.CVT) error {
-	var _, err = d.Search(cardType, cardValue)
-	var card = NewCard(cardType, cardValue)
-	if err == nil {
-		return errors.New(fmt.Sprintf("Deck already have %s card", card.CardPrintValue()))
+	var existingCard = d.Search(cardType, cardValue)
+	if existingCard != nil {
+		fmt.Println(errors.New(fmt.Sprintf("Deck already have %s card", existingCard.CardPrintValue())))
+		os.Exit(1)
 	}
 
+	var card = NewCard(cardType, cardValue)
 	d.cards = append(d.cards, card)
 
 	return nil
