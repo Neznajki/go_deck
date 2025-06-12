@@ -1,14 +1,18 @@
 package contract
 
 import (
+	"fmt"
 	"testing"
 )
 import "gotest.tools/v3/assert"
 
 func TestNewCardType(t *testing.T) {
-	if NewCardType(Clubs) == nil {
+	cardType := NewCardType(Clubs)
+	if cardType == nil {
 		t.Error("NewCardType(Clubs) returned nil")
 	}
+
+	assert.Equal(t, fmt.Sprintf("%+v", cardType), "&{cT:0}")
 }
 
 func TestCardType_CardType(t *testing.T) {

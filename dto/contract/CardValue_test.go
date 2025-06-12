@@ -1,14 +1,18 @@
 package contract
 
 import (
+	"fmt"
 	"gotest.tools/v3/assert"
 	"testing"
 )
 
 func TestNewCardValue(t *testing.T) {
-	if NewCardValue(Ace) == nil {
+	cardValue := NewCardValue(Ace)
+	if cardValue == nil {
 		t.Error("NewCardValue(Ace) returned nil")
 	}
+
+	assert.Equal(t, fmt.Sprintf("%+v", cardValue), "&{cV:12}")
 }
 
 func TestCardValue_CardValue(t *testing.T) {
