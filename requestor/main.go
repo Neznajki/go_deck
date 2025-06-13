@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"net/http"
 )
 
 func main() {
@@ -26,15 +25,4 @@ func main() {
 	for range links {
 		fmt.Println(<-channel)
 	}
-}
-
-func checkSite(link string, channel chan string) {
-	_, err := http.Get(link)
-
-	if err != nil {
-		channel <- fmt.Sprintf("Link Not Working : %s, with reason %v", link, err.Error())
-		return
-	}
-
-	channel <- fmt.Sprintf("Link Working : %s", link)
 }
