@@ -8,10 +8,10 @@ import (
 )
 
 type RequestData struct {
-	Link   string
-	c      chan RequestData
-	repeat bool
-	tries  int
+	Link      string
+	c         chan RequestData
+	terminate bool
+	tries     int
 }
 
 func main() {
@@ -29,47 +29,57 @@ func main() {
 	channel := make(chan RequestData, len(links))
 
 	for _, link := range links {
-		rd := RequestData{Link: link, c: channel, repeat: true}
-		go monitorSite(rd)
+		rd := RequestData{Link: link, c: channel}
+		go executeWithRetry(rd)
 	}
 
 	for len(links) > 0 {
 		rd := <-channel
-		if rd.repeat {
-			go monitorSite(rd)
+		if rd.terminate {
+			links = slices.DeleteFunc(links, func(s string) bool {
+				return s == rd.Link
+			})
+
+			fmt.Println("----done monitoring---- ", rd.Link)
 			continue
 		}
 
-		links = slices.DeleteFunc(links, func(s string) bool {
-			return s == rd.Link
-		})
-
-		fmt.Println("----done monitoring---- ", rd.Link)
+		go executeWithRetry(rd)
 	}
 }
 
-func monitorSite(rd RequestData) {
-	_, err := http.Get(rd.Link)
-
-	rd.tries++
-
+func executeWithRetry(rd RequestData) {
 	if rd.tries >= 10 {
-		rd.repeat = false
+		rd.terminate = true
 		fmt.Println(fmt.Sprintf("done requests due to limitation for link (%s)", rd.Link))
-	}
-
-	if err != nil {
-		fmt.Println(fmt.Sprintf("link Not Working : %s, with reason %v", rd.Link, err.Error()))
-		rd.repeat = false
 		rd.c <- rd
 		return
 	}
 
-	fmt.Println("link Working : ", rd.Link)
+	rd = monitorSite(rd)
+	if rd.terminate {
+		rd.c <- rd
+		return
+	}
 	pause(2 * time.Second)
 
 	fmt.Println("--retry link-- ", rd.Link)
 	rd.c <- rd
+}
+
+func monitorSite(rd RequestData) RequestData {
+	_, err := http.Get(rd.Link)
+
+	rd.tries++
+
+	if err != nil {
+		fmt.Println(fmt.Sprintf("link Not Working : %s, with reason %v", rd.Link, err.Error()))
+		rd.terminate = true
+		return rd
+	}
+
+	fmt.Println("link Working : ", rd.Link)
+	return rd
 }
 
 func pause(timeToPause time.Duration) {
