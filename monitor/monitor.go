@@ -24,6 +24,7 @@ func main() {
 		"https://www.bing.com.cn",
 		"https://www.amazon.com",
 		"https://www.microsoft.cn",
+		"https://www.microsoft.com",
 	}
 
 	channel := make(chan RequestData, len(links))
